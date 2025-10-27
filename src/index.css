@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+html {
+  scroll-behavior: smooth;
+}
+
+
+body {
+  background-color: rgb(214, 214, 214);
+  background-image: radial-gradient(currentColor 0.4px, transparent 0.8px);
+  background-size: 20px 20px;
+  color: rrgba(0, 0, 0, 0.87);
+  transition: all 0.5s ease-in-out;
+}
+
+.dark body {
+  background-color: rgba(0, 0, 0, 0.87);
+  background-image: radial-gradient(white 0.4px, transparent 0.8px);
+  background-size: 20px 20px;
+  color:  rgb(214, 214, 214)white;
+}
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(3px);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(15);
+    opacity: 0;
+    filter: blur(8px);
+  }
+}
+@keyframes bgPulse {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(255,255,255,0.05);
+  }
+}
+
+body.active-pulse {
+  animation: bgPulse 1.2s ease-in-out;
+}
+
+
+.animate-ripple {
+  animation: ripple 1.4s ease-out forwards;
+}
+
+
+button:active {
+  transform: scale(0.98);
+}
