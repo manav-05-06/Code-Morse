@@ -1,33 +1,75 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../firebase"; // ✅ import from your firebase.js
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // 🔥 Track user authentication state
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    const storedToken = localStorage.getItem("token");
-    if (storedUsername && storedToken) {
-      setUser({ username: storedUsername, token: storedToken });
-    }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return unsubscribe;
   }, []);
 
-  const login = (username, token) => {
-    localStorage.setItem("username", username);
-    localStorage.setItem("token", token);
-    setUser({ username, token });
+  // ✉️ Register + send verification email
+  const register = async (email, password) => {
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    await sendEmailVerification(userCred.user);
+    alert("✅ Verification email sent! Please verify your account before login.");
   };
 
-  const logout = () => {
-    localStorage.removeItem("username");
-    localStorage.removeItem("token");
-    setUser(null);
+  // 🔑 Login user
+  const login = async (email, password) => {
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    if (!userCred.user.emailVerified) {
+      throw new Error("Email not verified");
+    }
+    return userCred.user;
+  };
+
+  // 🟢 Google login
+  const googleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    return await signInWithPopup(auth, provider);
+  };
+
+  // 🔐 Logout
+  const logout = () => signOut(auth);
+
+  // 🔁 Forgot Password
+  const resetPassword = async (email) => {
+    await sendPasswordResetEmail(auth, email);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
-      {children}
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        register,
+        login,
+        googleLogin,
+        logout,
+        resetPassword,
+      }}
+    >
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

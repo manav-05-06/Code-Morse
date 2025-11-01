@@ -7,10 +7,11 @@ import SoundQuiz from "./components/SoundQuiz";
 import CheatSheet from "./components/CheatSheet";
 import Footer from "./components/Footer";
 import CursorGlow from "./components/CursorGlow";
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { useAuth } from "./context/AuthContext";
 import { Analytics } from "@vercel/analytics/react";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function HomePage() {
   const { user } = useAuth();
@@ -128,6 +129,7 @@ function App() {
             {/* 🔐 Auth Routes */}
             <Route path="/login" element={<LoginWithRedirect />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
           </Routes>
         </main>
 
