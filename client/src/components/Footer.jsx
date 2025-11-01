@@ -28,7 +28,12 @@ export default function Footer() {
         {/* Left text */}
         <p className="font-medium tracking-wide">
           Made by{" "}
-          <span className="font-semibold"> Manav</span>
+          
+          <a
+          href="https://github.com/manav-05-06"
+          target="_blank"
+          className="text-black dark:text-white font-medium hover:underline"
+        ><span className="font-semibold"> Manav</span></a>
         </p>
 
         {/* Center navigation */}

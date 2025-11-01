@@ -12,7 +12,7 @@ export default function Practice() {
   const [currentLetter, setCurrentLetter] = useState("");
   const [userInput, setUserInput] = useState("");
   const [score, setScore] = useState(0);
-  const [round, setRound] = useState(0);
+  const [, setRound] = useState(0);
   const [soundOn, setSoundOn] = useState(true);
   const [feedback, setFeedback] = useState("");
 
@@ -68,6 +68,7 @@ export default function Practice() {
   const nextRound = () => getRandomLetter();
 
   return (
+    
     <section className="min-h-screen flex flex-col items-center justify-center pt- px-4 py-10 text-center">
       <h2 className="text-4xl md:text-5xl font-semibold mb-1 text-black dark:text-white">
         Practice
@@ -140,5 +141,6 @@ export default function Practice() {
         </button>
       </div>
     </section>
+    
   );
 }

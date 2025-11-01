@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌐 Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 🎨 Default Light Theme Background */
+body {
+  background-color: #f5f5f5;
+  background-image: radial-gradient(currentColor 0.4px, transparent 0.8px);
+  background-size: 20px 20px;
+  color: rgba(0, 0, 0, 0.9);
+  transition: all 0.5s ease-in-out;
+   /* Hide system cursor */
+}
+
+/* 🌙 Dark Mode Background */
+.dark body {
+  background-color: #0a0a0a;
+  background-image: radial-gradient(white 0.4px, transparent 0.8px);
+  background-size: 20px 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 🌊 Button & Background Pulse Animation */
+@keyframes ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(3px);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(15);
+    opacity: 0;
+    filter: blur(8px);
+  }
+}
+
+@keyframes bgPulse {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+@keyframes darkPulse {
+  0%, 100% {
+    background-color: #0a0a0a;
+  }
+  50% {
+    background-color: rgba(56, 56, 56, 0.95);
+  }
+}
+.gradient-text {
+  background: linear-gradient(90deg, #ff007a, #00e0ff, #00ff9d);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Glass overlay contrast tweaks */
+.light .locked-overlay {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: #111;
+}
+
+.dark .locked-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #f0f0f0;
+}
+
+
+/* 🌈 Body Pulse on Click */
+body.active-pulse {
+  animation: bgPulse 1.2s ease-in-out;
+}
+
+.dark body.active-pulse {
+  animation: darkPulse 1.2s ease-in-out;
+}
+
+/* 💧 Ripple Effect for Buttons */
+.animate-ripple {
+  animation: ripple 1.4s ease-out forwards;
+}
+
+/* 🖱️ Button Interaction */
+button:active {
+  transform: scale(0.97);
+}
+
+/* 📜 Section Visibility (always visible for simplicity) */
+section {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================================
+   🌀 Custom Cursor + Ripple Glow
+===================================================== */
+#cursor-glow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.95;
+  mix-blend-mode: difference;
+  background: rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    width 0.3s ease,
+    height 0.3s ease,
+    filter 0.3s ease;
+}
+
+/* 🌙 Dark Mode Cursor */
+.dark #cursor-glow {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+/* ✨ Ripple Expansion */
+#cursor-ripple {
+  position: fixed;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  mix-blend-mode: difference;
+}
+
+#cursor-ripple.active {
+  animation: cursorPulse 0.7s ease-out forwards;
+}
+
+@keyframes cursorPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+/* 🪶 Hover Expansion for Interactive Elements */
+a:hover ~ #cursor-glow,
+button:hover ~ #cursor-glow,
+input:hover ~ #cursor-glow,
+textarea:hover ~ #cursor-glow {
+  transform: scale(1.4);
+  opacity: 1;
+}
+
+/* 💥 Click Shrink Feedback */
+body:active #cursor-glow {
+  transform: scale(0.8);
+  opacity: 0.8;
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 export default function SoundQuiz() {
   const [difficulty, setDifficulty] = useState("Letters");
@@ -8,7 +8,6 @@ export default function SoundQuiz() {
   const [round, setRound] = useState(0);
   const [streak, setStreak] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [quizTargetText, setQuizTargetText] = useState("");
   const [quizTargetMorse, setQuizTargetMorse] = useState("");
 
@@ -18,33 +17,42 @@ export default function SoundQuiz() {
   const visualizerRef = useRef(null);
   const visualizerInterval = useRef(null);
 
-  // Morse Dictionary
-  const morseMap = {
-    A: ".-", B: "-...", C: "-.-.", D: "-..", E: ".", F: "..-.",
-    G: "--.", H: "....", I: "..", J: ".---", K: "-.-", L: ".-..",
-    M: "--", N: "-.", O: "---", P: ".--.", Q: "--.-", R: ".-.",
-    S: "...", T: "-", U: "..-", V: "...-", W: ".--", X: "-..-",
-    Y: "-.--", Z: "--..",
-    0: "-----", 1: ".----", 2: "..---", 3: "...--", 4: "....-",
-    5: ".....", 6: "-....", 7: "--...", 8: "---..", 9: "----.",
-  };
+  // Morse Dictionary (memoized for performance)
+  const morseMap = useMemo(
+    () => ({
+      A: ".-", B: "-...", C: "-.-.", D: "-..", E: ".", F: "..-.",
+      G: "--.", H: "....", I: "..", J: ".---", K: "-.-", L: ".-..",
+      M: "--", N: "-.", O: "---", P: ".--.", Q: "--.-", R: ".-.",
+      S: "...", T: "-", U: "..-", V: "...-", W: ".--", X: "-..-",
+      Y: "-.--", Z: "--..",
+      0: "-----", 1: ".----", 2: "..---", 3: "...--", 4: "....-",
+      5: ".....", 6: "-....", 7: "--...", 8: "---..", 9: "----.",
+    }),
+    []
+  );
 
-  const letterKeys = Object.keys(morseMap);
+  const letterKeys = useMemo(() => Object.keys(morseMap), [morseMap]);
+  const wordList = useMemo(
+    () => ["HELLO", "WORLD", "MORSE", "QUIZ", "SIGNAL", "RADIO"],
+    []
+  );
+  const sentenceList = useMemo(
+    () => ["HELLO WORLD", "MORSE CODE QUIZ", "I LOVE RADIO", "LEARN MORSE FAST"],
+    []
+  );
 
-  const wordList = ["HELLO", "WORLD", "MORSE", "QUIZ", "SIGNAL", "RADIO"];
-  const sentenceList = [
-    "HELLO WORLD",
-    "MORSE CODE QUIZ",
-    "I LOVE RADIO",
-    "LEARN MORSE FAST",
-  ];
+  const textToMorse = useCallback(
+    (text) =>
+      text
+        .toUpperCase()
+        .split("")
+        .map((ch) => (ch === " " ? "/" : morseMap[ch] || "?"))
+        .join(" "),
+    [morseMap]
+  );
 
-  useEffect(() => {
-    generateNewQuizItemWithoutAutoPlay();
-  }, []);
-
-  // --- QUIZ GENERATION ---
-  const generateNewQuizItemWithoutAutoPlay = () => {
+  // ✅ Optimized useCallback (includes proper dependencies)
+  const generateNewQuizItemWithoutAutoPlay = useCallback(() => {
     let text = "";
     if (difficulty === "Letters") {
       text = letterKeys[Math.floor(Math.random() * letterKeys.length)];
@@ -55,24 +63,22 @@ export default function SoundQuiz() {
     }
     setQuizTargetText(text);
     setQuizTargetMorse(textToMorse(text));
-  };
+  }, [difficulty, letterKeys, wordList, sentenceList, textToMorse]);
+
+  useEffect(() => {
+    generateNewQuizItemWithoutAutoPlay();
+  }, [generateNewQuizItemWithoutAutoPlay]);
 
   const generateNewRound = () => {
     setRound((r) => r + 1);
     generateNewQuizItemWithoutAutoPlay();
   };
 
-  const textToMorse = (text) => {
-    return text
-      .toUpperCase()
-      .split("")
-      .map((ch) => (ch === " " ? "/" : morseMap[ch] || "?"))
-      .join(" ");
-  };
-
   // --- PLAY MORSE SOUND ---
   const playMorseSound = () => {
-    if (!audioCtx.current) audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+    if (!audioCtx.current)
+      audioCtx.current = new (window.AudioContext || window.webkitAudioContext)();
+
     const ctx = audioCtx.current;
     const dot = 0.1 / speed;
     const dash = 0.3 / speed;
@@ -102,12 +108,10 @@ export default function SoundQuiz() {
     osc.start();
     osc.stop(time);
 
-    // Animate bars
     startVisualizer();
     setTimeout(stopVisualizer, (time - ctx.currentTime) * 1000);
   };
 
-  // --- VISUALIZER ---
   const startVisualizer = () => {
     if (!visualizerRef.current) return;
     const bars = visualizerRef.current.querySelectorAll(".bar");
@@ -129,7 +133,6 @@ export default function SoundQuiz() {
     }
   };
 
-  // --- CHECK ANSWER ---
   const handleSubmit = () => {
     totalRounds.current += 1;
     const correct = input.trim().toUpperCase() === quizTargetText;
