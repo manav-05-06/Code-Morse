@@ -7,7 +7,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- 🚀 SEO OPTIMIZED TITLE (Important) -->
+    <!-- 🚀 SEO OPTIMIZED TITLE -->
     <title>
       Free Morse Code Converter | Text ↔ Morse Translator with Sound | MorseCode App
     </title>
@@ -111,7 +111,7 @@
     </script>
 
     <!-- ========================================= -->
-    <!-- 📘 JSON-LD — FAQ (Boosts Google Ranking) -->
+    <!-- 📘 JSON-LD — FAQ (Google Ranking Boost) -->
     <!-- ========================================= -->
     <script type="application/ld+json">
       {
@@ -139,7 +139,15 @@
     </script>
 
     <!-- ========================================= -->
-    <!-- 🎬 INTRO LOADER STYLES (YOUR DESIGN PRESERVED) -->
+    <!-- 🟦 PWA MANIFEST -->
+    <!-- ========================================= -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="apple-touch-icon" href="/icon-512.png" />
+
+    <!-- ========================================= -->
+    <!-- 🎬 INTRO LOADER STYLES -->
     <!-- ========================================= -->
     <style>
       body {
@@ -154,7 +162,6 @@
         color: #fff;
       }
 
-      /* Loader container */
       #intro-loader {
         position: fixed;
         inset: 0;
@@ -185,8 +192,7 @@
         white-space: nowrap;
         overflow: hidden;
         width: 0;
-        animation:
-          typing 1.4s 0.4s steps(30, end) forwards,
+        animation: typing 1.4s 0.4s steps(30, end) forwards,
           blink 0.8s step-end infinite;
       }
       .subtext {
@@ -214,47 +220,24 @@
       }
 
       @keyframes typing {
-        from {
-          width: 0;
-        }
-        to {
-          width: 23ch;
-        }
+        from { width: 0; }
+        to { width: 23ch; }
       }
       @keyframes blink {
-        50% {
-          border-color: transparent;
-        }
+        50% { border-color: transparent; }
       }
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(6px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
       }
       @keyframes slideLine {
-        0% {
-          transform: scaleX(0);
-        }
-        50% {
-          transform: scaleX(1);
-        }
-        100% {
-          transform: scaleX(0);
-        }
+        0% { transform: scaleX(0); }
+        50% { transform: scaleX(1); }
+        100% { transform: scaleX(0); }
       }
 
-      #root {
-        opacity: 0;
-        transition: opacity 1.2s ease 0.3s;
-      }
-      #root.show {
-        opacity: 1;
-      }
+      #root { opacity: 0; transition: opacity 1.2s ease 0.3s; }
+      #root.show { opacity: 1; }
     </style>
   </head>
 
@@ -267,9 +250,7 @@
     <div id="intro-loader">
       <div class="loading-text">LOADING ...</div>
       <div class="typing">HI, WELCOME TO MORSECODE :)</div>
-      <div class="subtext">
-        A SIMPLE PLACE TO LEARN MORSE CODE WITH SOUND 🎵
-      </div>
+      <div class="subtext">A SIMPLE PLACE TO LEARN MORSE CODE WITH SOUND 🎵</div>
       <div class="line"></div>
     </div>
 
@@ -279,7 +260,7 @@
     <!-- React App -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- Loader Script -->
+    <!-- Intro Loader script -->
     <script>
       window.addEventListener("load", () => {
         const loader = document.getElementById("intro-loader");
@@ -304,6 +285,86 @@
         document.title = titles[i % titles.length];
         i++;
       }, 1800);
+    </script>
+
+    <!-- ======================== -->
+    <!-- 🟧 INSTALL POPUP (PWA)   -->
+    <!-- ======================== -->
+    <div
+      id="installPopup"
+      style="
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255,255,255,0.85);
+        padding: 16px 22px;
+        border-radius: 14px;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        display: none;
+        backdrop-filter: blur(12px);
+        z-index: 999999;
+      "
+      class="dark:bg-black/70 dark:border-white/20 dark:text-white"
+    >
+      <p style="margin-bottom: 10px; font-weight: 600;">
+        Install MorseCode App?
+      </p>
+      <button
+        id="installBtn"
+        style="
+          padding: 8px 16px;
+          background: black;
+          color: white;
+          border-radius: 8px;
+          border: none;
+          cursor: pointer;
+        "
+        class="dark:bg-white dark:text-black"
+      >
+        Install
+      </button>
+    </div>
+
+    <!-- PWA Install Logic -->
+    <script>
+      let deferredPrompt;
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        if (localStorage.getItem("installedPWA") === "true") return;
+
+        e.preventDefault();
+        deferredPrompt = e;
+
+        document.getElementById("installPopup").style.display = "block";
+      });
+
+      document.getElementById("installBtn").addEventListener("click", async () => {
+        if (!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+
+        if (choice.outcome === "accepted") {
+          localStorage.setItem("installedPWA", "true");
+          document.getElementById("installPopup").style.display = "none";
+        }
+      });
+
+      window.addEventListener("appinstalled", () => {
+        localStorage.setItem("installedPWA", "true");
+        document.getElementById("installPopup").style.display = "none";
+      });
+    </script>
+
+    <!-- ======================== -->
+    <!-- REGISTER SERVICE WORKER -->
+    <!-- ======================== -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/service-worker.js");
+      }
     </script>
 
     <!-- Vercel Analytics -->
