@@ -34,7 +34,7 @@ export default function CheatSheet() {
   const [ripples, setRipples] = useState([]);
   const ref = useRef(null);
 
-  // ✨ Fade in when visible
+  // ========= Fade-in Animation on scroll =========
   useEffect(() => {
     const el = ref.current;
     const observer = new IntersectionObserver(
@@ -47,10 +47,9 @@ export default function CheatSheet() {
     return () => el && observer.unobserve(el);
   }, []);
 
+  // ========= Play Morse Sound =========
   const playMorseSound = useCallback((letter, code) => {
     setPlayingLetter(letter);
-    document.body.classList.add("active-pulse");
-    setTimeout(() => document.body.classList.remove("active-pulse"), 1200);
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const dot = 120;
@@ -64,91 +63,117 @@ export default function CheatSheet() {
       gain.connect(audioCtx.destination);
       osc.start(t);
       osc.stop(t + dur / 1000);
-      t += (dur + 100) / 1000;
+      t += (dur + 120) / 1000;
     };
 
     for (const s of code) {
-      if (s === ".") beep(dot);
-      else if (s === "-") beep(dot * 3);
-      t += 0.1;
+      beep(s === "." ? dot : dot * 3);
     }
 
-    const duration = code.length * (dot * 3 + 100);
+    const duration = code.length * (dot * 3 + 120);
     setTimeout(() => setPlayingLetter(null), duration);
   }, []);
 
-  // 🌊 Ripple animation
+  // ========= Ripple Effect =============
   const handleClick = (e, item) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const ripple = { x, y, id: Date.now(), color: item.color, letter: item.letter };
+
+    const ripple = {
+      x,
+      y,
+      id: Date.now(),
+      color: item.color,
+      letter: item.letter,
+    };
+
     setRipples((r) => [...r, ripple]);
-    playMorseSound(item.letter, item.code, item.color);
-    setTimeout(() => setRipples((r) => r.filter((x) => x.id !== ripple.id)), 700);
+    playMorseSound(item.letter, item.code);
+
+    setTimeout(() => {
+      setRipples((r) => r.filter((p) => p.id !== ripple.id));
+    }, 700);
   };
 
   return (
     <section
       ref={ref}
       id="reference"
-      className="py-20 px-6 flex flex-col items-center text-center opacity-0 translate-y-10 transition-all duration-700"
+      className="py-20 px-4 sm:px-6 md:px-8 lg:px-10 flex flex-col items-center text-center opacity-0 translate-y-10 transition-all duration-700"
     >
       <h2 className="text-3xl md:text-4xl font-semibold mb-2 text-black dark:text-white">
         Movie Morse Guide 🎬
       </h2>
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-        Click any letter to play its Morse tone and see its cinematic ripple.
+        Tap any letter to hear the Morse tone.
       </p>
       <p className="text-xs text-gray-400 dark:text-gray-500 mb-10">
         Dots, dashes & movie magic ✨
       </p>
 
-      <div className="backdrop-blur-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl w-full">
+      {/* ======= Responsive Grid (mobile → ultra-wide) ======= */}
+      <div className="
+        grid 
+        grid-cols-2 
+        sm:grid-cols-3 
+        md:grid-cols-4 
+        lg:grid-cols-5 
+        xl:grid-cols-6 
+        gap-5 sm:gap-6 md:gap-8 
+        max-w-7xl w-full
+      ">
         {morseGuide.map((item) => (
           <button
             key={item.letter}
             onClick={(e) => handleClick(e, item)}
-            className={`relative overflow-hidden flex flex-col justify-center items-center border border-black/20 dark:border-white/20 rounded-md backdrop-blur-md py-6 px-4 transition-all duration-300 
+            className={`
+              relative overflow-hidden flex flex-col items-center justify-center 
+              rounded-xl border border-black/10 dark:border-white/10 
+              backdrop-blur-md py-6 sm:py-7 md:py-8 px-4
+              transition-all duration-300 touch-manipulation
               ${
                 playingLetter === item.letter
-                  ? "scale-[1.05] shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+                  ? "scale-[1.06] shadow-[0_0_20px_rgba(255,255,255,0.25)]"
                   : "hover:scale-[1.03]"
-              }`}
+              }
+            `}
             style={{
               background:
-                playingLetter === item.letter
-                  ? `${item.color}22`
-                  : "rgba(255,255,255,0.08)",
+                playingLetter === item.letter ? `${item.color}25` : "rgba(255,255,255,0.07)",
               boxShadow:
                 playingLetter === item.letter
-                  ? `0 0 15px ${item.color}, inset 0 0 8px ${item.color}55`
+                  ? `0 0 12px ${item.color}, inset 0 0 5px ${item.color}55`
                   : "none",
             }}
           >
-            {/* Ripple */}
+            {/* Ripple Effects */}
             {ripples
               .filter((r) => r.letter === item.letter)
               .map((r) => (
                 <span
                   key={r.id}
-                  className="absolute rounded-full opacity-70 animate-ripple"
+                  className="absolute rounded-full opacity-60 animate-[ripple_0.6s_ease-out]"
                   style={{
                     top: r.y,
                     left: r.x,
-                    width: 30,
-                    height: 30,
+                    width: 40,
+                    height: 40,
                     background: item.color,
                     transform: "translate(-50%, -50%)",
                   }}
                 />
               ))}
 
-            <h3 className="text-2xl font-semibold text-black dark:text-white z-10">
+            <h3 className="text-2xl sm:text-3xl font-semibold text-black dark:text-white z-10">
               {item.letter}
             </h3>
-            <p className="mt-2 text-lg text-gray-700 dark:text-gray-300 z-10">{item.code}</p>
-            <p className="mt-1 text-base font-medium text-gray-800 dark:text-gray-200 z-10">
+
+            <p className="mt-1 text-lg sm:text-xl text-gray-700 dark:text-gray-300 z-10">
+              {item.code}
+            </p>
+
+            <p className="mt-1 text-sm sm:text-base font-medium text-gray-800 dark:text-gray-200 z-10">
               {item.word}
             </p>
           </button>

@@ -3,109 +3,112 @@ import { useEffect, useRef, useState } from "react";
 export default function CursorGlow() {
   const cursorRef = useRef(null);
   const rippleRef = useRef(null);
-  const [target, setTarget] = useState({ x: 0, y: 0 });
-  const [, setCurrent] = useState({ x: 0, y: 0 });
-  const [color, setColor] = useState("white");
-  const [hovering, setHovering] = useState(false);
 
-  // Mouse move + color detection
+  const [target, setTarget] = useState({ x: 0, y: 0 });
+  const pos = useRef({ x: 0, y: 0 });
+  const [hovering, setHovering] = useState(false);
+  const [cursorColor, setCursorColor] = useState("white");
+
+  // Track mouse movement + dynamic color
   useEffect(() => {
-    const handleMove = (e) => {
+    const move = (e) => {
       setTarget({ x: e.clientX, y: e.clientY });
 
-      const element = document.elementFromPoint(e.clientX, e.clientY);
-      if (!element) return;
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      if (!el) return;
 
-      const isHoverable = ["A", "BUTTON", "INPUT", "TEXTAREA"].includes(
-        element.tagName
+      const hoverable = ["A", "BUTTON", "INPUT", "TEXTAREA", "DIV"].includes(
+        el.tagName
       );
-      setHovering(isHoverable);
 
-      const computed = getComputedStyle(element);
-      const bg = computed.backgroundColor.match(/\d+/g);
+      setHovering(hoverable);
+
+      // Auto-detect brightness for cursor inversion
+      const bg = getComputedStyle(el).backgroundColor.match(/\d+/g);
+
       if (bg) {
         const [r, g, b] = bg.map(Number);
         const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        setColor(brightness > 128 ? "black" : "white");
+        setCursorColor(brightness > 140 ? "black" : "white");
       } else {
-        const isDark = document.documentElement.classList.contains("dark");
-        setColor(isDark ? "white" : "black");
+        setCursorColor(
+          document.documentElement.classList.contains("dark")
+            ? "white"
+            : "black"
+        );
       }
     };
 
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
   }, []);
 
   // Smooth following motion
   useEffect(() => {
-    let rafId;
-    const speed = 0.12;
+    let frame;
+    const speed = 0.14;
 
-    const follow = () => {
-      setCurrent((prev) => {
-        const dx = target.x - prev.x;
-        const dy = target.y - prev.y;
-        const newX = prev.x + dx * speed;
-        const newY = prev.y + dy * speed;
+    const animate = () => {
+      pos.current.x += (target.x - pos.current.x) * speed;
+      pos.current.y += (target.y - pos.current.y) * speed;
 
-        if (cursorRef.current) {
-          cursorRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
-          cursorRef.current.style.backgroundColor = color;
-          cursorRef.current.style.boxShadow =
-            color === "white"
-              ? "0 0 20px rgba(255,255,255,0.4)"
-              : "0 0 20px rgba(0,0,0,0.3)";
-          cursorRef.current.style.width = hovering ? "38px" : "26px";
-          cursorRef.current.style.height = hovering ? "38px" : "26px";
-          cursorRef.current.style.filter = hovering
-            ? "blur(2px) brightness(1.2)"
-            : "blur(0)";
-        }
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px)`;
+        cursorRef.current.style.backgroundColor = cursorColor;
 
-        return { x: newX, y: newY };
-      });
-      rafId = requestAnimationFrame(follow);
+        cursorRef.current.style.width = hovering ? "34px" : "24px";
+        cursorRef.current.style.height = hovering ? "34px" : "24px";
+
+        cursorRef.current.style.boxShadow = hovering
+          ? `0 0 20px ${cursorColor === "white" ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)"}`
+          : `0 0 10px ${cursorColor === "white" ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)"}`;
+
+        cursorRef.current.style.filter = hovering ? "blur(1px)" : "blur(0)";
+      }
+
+      frame = requestAnimationFrame(animate);
     };
 
-    follow();
-    return () => cancelAnimationFrame(rafId);
-  }, [target, color, hovering]);
+    animate();
+    return () => cancelAnimationFrame(frame);
+  }, [target, cursorColor, hovering]);
 
-  // Ripple pulse effect
+  // Ripple pulse on click
   useEffect(() => {
-    const handleClick = () => {
-      if (!cursorRef.current || !rippleRef.current) return;
+    const click = () => {
+      if (!rippleRef.current) return;
 
       rippleRef.current.classList.remove("active");
-      void rippleRef.current.offsetWidth; // reflow for restart
+      void rippleRef.current.offsetWidth;
       rippleRef.current.classList.add("active");
     };
 
-    window.addEventListener("mousedown", handleClick);
-    return () => window.removeEventListener("mousedown", handleClick);
+    window.addEventListener("mousedown", click);
+    return () => window.removeEventListener("mousedown", click);
   }, []);
 
   return (
     <>
+      {/* Main glow cursor */}
       <div
         ref={cursorRef}
         id="cursor-glow"
         style={{
           position: "fixed",
-          left: 0,
           top: 0,
-          width: "26px",
-          height: "26px",
+          left: 0,
+          width: "24px",
+          height: "24px",
           borderRadius: "50%",
           pointerEvents: "none",
           mixBlendMode: "difference",
           zIndex: 9999,
-          opacity: 0.95,
           transition:
-            "background-color 0.3s ease, box-shadow 0.3s ease, width 0.3s ease, height 0.3s ease, filter 0.3s ease",
+            "background-color 0.3s, width 0.2s, height 0.2s, box-shadow 0.3s, filter 0.3s",
         }}
       />
+
+      {/* Ripple click effect */}
       <div id="cursor-ripple" ref={rippleRef}></div>
     </>
   );

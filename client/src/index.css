@@ -2,134 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🌐 Smooth scrolling */
+/* ======================================================
+   🌐 Smooth Scrolling
+====================================================== */
 html {
   scroll-behavior: smooth;
 }
 
-/* 🎨 Default Light Theme Background */
+/* ======================================================
+   🌍 Light + Dark Theme Dot Background
+====================================================== */
 body {
   background-color: #f5f5f5;
-  background-image: radial-gradient(currentColor 0.4px, transparent 0.8px);
-  background-size: 20px 20px;
+  background-image: radial-gradient(currentColor 0.6px, transparent 0.75px);
+  background-size: 22px 22px;
   color: rgba(0, 0, 0, 0.9);
-  transition: all 0.5s ease-in-out;
-   /* Hide system cursor */
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* 🌙 Dark Mode Background */
 .dark body {
   background-color: #0a0a0a;
-  background-image: radial-gradient(white 0.4px, transparent 0.8px);
-  background-size: 20px 20px;
+  background-image: radial-gradient(white 0.6px, transparent 0.75px);
+  background-size: 22px 22px;
   color: rgba(255, 255, 255, 0.9);
 }
 
-/* 🌊 Button & Background Pulse Animation */
-@keyframes ripple {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0.8;
-    filter: blur(2px);
-  }
-  50% {
-    opacity: 0.5;
-    filter: blur(3px);
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(15);
-    opacity: 0;
-    filter: blur(8px);
-  }
+/* ======================================================
+   ✨ Section Fade-in Animation
+====================================================== */
+section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: sectionFade 0.6s ease-out forwards;
 }
 
-@keyframes bgPulse {
-  0%, 100% {
-    background-color: transparent;
-  }
-  50% {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-}
-
-@keyframes darkPulse {
-  0%, 100% {
-    background-color: #0a0a0a;
-  }
-  50% {
-    background-color: rgba(56, 56, 56, 0.95);
-  }
-}
-.gradient-text {
-  background: linear-gradient(90deg, #ff007a, #00e0ff, #00ff9d);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 3s linear infinite;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.98);
-  }
+@keyframes sectionFade {
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.5s ease forwards;
+.section-delay-1 { animation-delay: 0.1s; }
+.section-delay-2 { animation-delay: 0.2s; }
+.section-delay-3 { animation-delay: 0.3s; }
+
+/* ======================================================
+   🌈 3D Underline Animation
+====================================================== */
+.nav-3d-underline {
+  position: relative;
+  padding-bottom: 3px;
 }
 
-/* Glass overlay contrast tweaks */
-.light .locked-overlay {
-  background-color: rgba(255, 255, 255, 0.4);
-  color: #111;
+.nav-3d-underline::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, #00e0ff, #ff009d);
+  transform: translateX(-50%);
+  border-radius: 4px;
+  transition: width 0.35s ease;
 }
 
-.dark .locked-overlay {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #f0f0f0;
+.nav-3d-underline:hover::after,
+.nav-active.nav-3d-underline::after {
+  width: 100%;
 }
 
-
-/* 🌈 Body Pulse on Click */
-body.active-pulse {
-  animation: bgPulse 1.2s ease-in-out;
+.dark .nav-3d-underline::after {
+  box-shadow: 0 0 12px rgba(255,255,255,0.5);
 }
 
-.dark body.active-pulse {
-  animation: darkPulse 1.2s ease-in-out;
+/* ======================================================
+   🧊 Global Glassmorphism Cards
+====================================================== */
+.glass-card {
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: 12px;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.12);
 }
 
-/* 💧 Ripple Effect for Buttons */
+.dark .glass-card {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+
+/* ======================================================
+   🌊 Ripple + Body Pulse
+====================================================== */
+@keyframes ripple {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.85; filter: blur(2px); }
+  50% { opacity: 0.45; filter: blur(4px); }
+  100% { transform: translate(-50%, -50%) scale(15); opacity: 0; filter: blur(8px); }
+}
+
 .animate-ripple {
   animation: ripple 1.4s ease-out forwards;
 }
 
-/* 🖱️ Button Interaction */
-button:active {
-  transform: scale(0.97);
-}
+@keyframes bgPulseLight { 50% { background-color: rgba(255,255,255,0.10); } }
+@keyframes bgPulseDark { 50% { background-color: rgba(30,30,30,0.90); } }
 
-/* 📜 Section Visibility (always visible for simplicity) */
-section {
-  opacity: 1;
-  transform: translateY(0);
-}
+body.active-pulse { animation: bgPulseLight 0.9s ease-in-out; }
+.dark body.active-pulse { animation: bgPulseDark 0.9s ease-in-out; }
 
-/* =====================================================
-   🌀 Custom Cursor + Ripple Glow
-===================================================== */
+/* ======================================================
+   ⚡ Custom Cursor Glow + Ripple
+====================================================== */
 #cursor-glow {
   position: fixed;
   left: 0;
@@ -140,67 +126,205 @@ section {
   pointer-events: none;
   z-index: 9999;
   opacity: 0.95;
-  mix-blend-mode: difference;
   background: rgba(0, 0, 0, 0.75);
   border: 1px solid rgba(0, 0, 0, 0.25);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  mix-blend-mode: difference;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
   transition:
-    background-color 0.3s ease,
-    box-shadow 0.3s ease,
-    width 0.3s ease,
-    height 0.3s ease,
-    filter 0.3s ease;
+    width 0.25s,
+    height 0.25s,
+    background-color 0.25s,
+    box-shadow 0.25s,
+    filter 0.25s,
+    transform 0.2s;
 }
 
-/* 🌙 Dark Mode Cursor */
 .dark #cursor-glow {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(255,255,255,0.25);
+  box-shadow: 0 0 12px rgba(255,255,255,0.6);
 }
 
-/* ✨ Ripple Expansion */
 #cursor-ripple {
   position: fixed;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%) scale(0);
   opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
   mix-blend-mode: difference;
 }
 
 #cursor-ripple.active {
-  animation: cursorPulse 0.7s ease-out forwards;
+  animation: cursorPulse 0.6s ease-out forwards;
 }
 
 @keyframes cursorPulse {
-  0% {
-    transform: translate(-50%, -50%) scale(0.6);
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.3;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
-  }
+  0% { transform: scale(0.35); opacity: 0.6; }
+  75% { opacity: 0.15; }
+  100% { transform: scale(2.7); opacity: 0; }
 }
 
-/* 🪶 Hover Expansion for Interactive Elements */
 a:hover ~ #cursor-glow,
 button:hover ~ #cursor-glow,
 input:hover ~ #cursor-glow,
 textarea:hover ~ #cursor-glow {
   transform: scale(1.4);
-  opacity: 1;
 }
 
-/* 💥 Click Shrink Feedback */
-body:active #cursor-glow {
-  transform: scale(0.8);
+/* ======================================================
+   📌 Sticky Section Titles
+====================================================== */
+.sticky-title {
+  position: sticky;
+  top: 70px;
+  z-index: 20;
+  backdrop-filter: blur(20px) saturate(180%);
+  padding: 10px 0;
+  font-weight: 600;
+}
+
+.sticky-title::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 6px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.4;
+}
+
+/* ======================================================
+   📱 Floating Mobile Mini Navbar
+====================================================== */
+.mobile-mini-nav {
+  position: fixed;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(0,0,0,0.1);
+  padding: 8px 18px;
+  border-radius: 50px;
+  display: flex;
+  gap: 22px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.dark .mobile-mini-nav {
+  background: rgba(0,0,0,0.4);
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.7);
+}
+
+.mobile-mini-nav a {
+  font-size: 14px;
   opacity: 0.8;
+  transition: opacity .25s, color .25s;
+}
+
+.mobile-mini-nav a.active {
+  opacity: 1;
+  color: #00e0ff;
+}
+
+/* ======================================================
+   ✨ Gradient Text (Hero / Title)
+====================================================== */
+.gradient-text {
+  background: linear-gradient(90deg, #ff007a, #00e0ff, #00ff9d);
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+/* ======================================================
+   🖱 Button Active Feedback
+====================================================== */
+button:active {
+  transform: scale(0.95);
+}
+
+/* ======================================================
+   💧 Liquid Wobble (For Toggle / Buttons)
+====================================================== */
+.liquid-wobble {
+  animation: wobbleLiquid 0.65s ease-out;
+}
+
+@keyframes wobbleLiquid {
+  0%   { transform: scale(1, 1); }
+  25%  { transform: scale(1.25, 0.75); }
+  50%  { transform: scale(0.75, 1.25); }
+  75%  { transform: scale(1.15, 0.85); }
+  100% { transform: scale(1, 1); }
+}
+
+/* Glossy liquid bubble */
+.liquid-layer {
+  position: absolute;
+  overflow: hidden;
+}
+
+.liquid-layer::before {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  filter: blur(6px);
+  opacity: 0.8;
+}
+
+.dark .liquid-layer::before {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* ======================================================
+   🧲 3D Magnetic Hover (Global)
+====================================================== */
+.magnetic-3d {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.magnetic-3d:hover {
+  transform: rotateX(8deg) rotateY(-8deg) scale(1.05);
+}
+
+/* ======================================================
+   🔔 Glass Toast
+====================================================== */
+.glass-toast {
+  backdrop-filter: blur(18px) saturate(180%);
+  background: rgba(255, 255, 255, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #111;
+  animation: toastSlide 0.4s ease, toastFade 0.4s ease 1.4s forwards;
+}
+
+.dark .glass-toast {
+  background: rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+@keyframes toastSlide {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes toastFade {
+  to { opacity: 0; transform: translate(-50%, -15px); }
 }

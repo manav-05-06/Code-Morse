@@ -1,63 +1,86 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- ✅ Basic Setup -->
+    <!-- ========================================= -->
+    <!-- 🚀 BASIC SETUP -->
+    <!-- ========================================= -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MorseCode | Learn, Practice & Play with Sound</title>
 
-    <!-- ✅ Favicon & App Icons -->
-    <link rel="icon" type="image/png" href="/favicon.ico" />
-    
+    <!-- 🚀 SEO OPTIMIZED TITLE (Important) -->
+    <title>
+      Free Morse Code Converter | Text ↔ Morse Translator with Sound | MorseCode App
+    </title>
 
-    <!-- ✅ Canonical URL -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <!-- Canonical -->
     <link rel="canonical" href="https://code-morse-me.vercel.app/" />
 
-    <!-- ✅ SEO Meta Tags -->
-    <meta
-      name="title"
-      content="MorseCode | Learn Morse Code with Fun & Sound"
-    />
+    <!-- ========================================= -->
+    <!-- 🧠 SEO META TAGS -->
+    <!-- ========================================= -->
     <meta
       name="description"
-      content="Interactive Morse Code platform to learn, practice, and play with sound. Built using React + Tailwind."
+      content="Free Morse Code Converter. Convert text to Morse and Morse to text instantly with sound playback, WAV download, practice mode, and clean UI. Fast, accurate, easy to use."
     />
+
     <meta
       name="keywords"
-      content="Morse Code, Learn Morse, Practice Morse, Morse Sound Quiz, React, Tailwind, Manav Khandelwal"
+      content="
+        morse code converter,
+        morse translator,
+        text to morse,
+        morse to text,
+        morse decoder,
+        online morse code generator,
+        morse code sound,
+        morse wav download,
+        morse code practice tool
+      "
     />
+
     <meta name="author" content="Manav Khandelwal" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#000000" />
 
-    <!-- ✅ Open Graph (Social Preview) -->
+    <!-- ========================================= -->
+    <!-- 🌐 OPEN GRAPH (SOCIAL SHARING) -->
+    <!-- ========================================= -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://code-morse-me.vercel.app/" />
     <meta property="og:site_name" content="MorseCode" />
+
     <meta
       property="og:title"
-      content="MorseCode | Learn, Practice & Play with Sound"
+      content="Free Morse Code Converter | Text ↔ Morse Translator"
     />
     <meta
       property="og:description"
-      content="Learn and practice Morse Code with sound effects, quizzes, and cinematic UI. Built by Manav Khandelwal."
+      content="Convert text to Morse & Morse to text with sound and WAV download. Free, fast, modern Morse tool."
     />
     <meta property="og:image" content="/preview.png" />
 
-    <!-- ✅ Twitter Card -->
+    <!-- ========================================= -->
+    <!-- 🐦 TWITTER CARD -->
+    <!-- ========================================= -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@manavkhandelwal" />
+
     <meta
       name="twitter:title"
-      content="MorseCode | Learn, Practice & Play with Sound"
+      content="Morse Code Converter | Text ↔ Morse with Sound"
     />
     <meta
       name="twitter:description"
-      content="Play, learn, and decode Morse like never before — cinematic, minimal, and interactive."
+      content="Free Morse converter with sound, clean UI, and instant translation."
     />
     <meta name="twitter:image" content="/preview.png" />
 
-    <!-- ✅ Fonts -->
+    <!-- ========================================= -->
+    <!-- 🔤 FONTS -->
+    <!-- ========================================= -->
     <link
       rel="preload"
       as="style"
@@ -68,14 +91,16 @@
       rel="stylesheet"
     />
 
-    <!-- ✅ JSON-LD Structured Data -->
+    <!-- ========================================= -->
+    <!-- 📘 JSON-LD — APP STRUCTURED DATA -->
+    <!-- ========================================= -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "MorseCode",
+        "name": "MorseCode Converter",
         "url": "https://code-morse-me.vercel.app/",
-        "description": "Interactive Morse Code platform to learn, practice, and play with sound.",
+        "description": "Free interactive Morse Code converter for text ↔ Morse with sound playback.",
         "creator": {
           "@type": "Person",
           "name": "Manav Khandelwal"
@@ -85,7 +110,37 @@
       }
     </script>
 
-    <!-- ✅ Intro Loader Styling -->
+    <!-- ========================================= -->
+    <!-- 📘 JSON-LD — FAQ (Boosts Google Ranking) -->
+    <!-- ========================================= -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I convert text to Morse code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Type any text in the converter and it instantly generates Morse code with optional sound playback and WAV export."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I convert Morse code back to text?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Paste dots and dashes into the decoder and it outputs plain English instantly."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <!-- ========================================= -->
+    <!-- 🎬 INTRO LOADER STYLES (YOUR DESIGN PRESERVED) -->
+    <!-- ========================================= -->
     <style>
       body {
         font-family: "JetBrains Mono", monospace;
@@ -119,15 +174,12 @@
         pointer-events: none;
       }
 
-      /* Animations */
       .loading-text {
         font-size: 1rem;
-        letter-spacing: 1px;
         animation: fadeIn 0.8s ease-in forwards;
       }
       .typing {
         font-size: 1.2rem;
-        letter-spacing: 1px;
         margin-top: 2rem;
         border-right: 2px solid currentColor;
         white-space: nowrap;
@@ -139,8 +191,8 @@
       }
       .subtext {
         opacity: 0;
-        font-size: 0.9rem;
         margin-top: 1rem;
+        font-size: 0.9rem;
         animation: fadeIn 1.6s 2.3s ease-in forwards;
         color: rgba(0, 0, 0, 0.55);
       }
@@ -150,7 +202,12 @@
       .line {
         width: 70%;
         height: 1px;
-        background: linear-gradient(to right, transparent, currentColor, transparent);
+        background: linear-gradient(
+          to right,
+          transparent,
+          currentColor,
+          transparent
+        );
         margin-top: 2rem;
         opacity: 0.4;
         animation: slideLine 3s 1.2s ease-in-out infinite;
@@ -204,7 +261,9 @@
   <body
     class="antialiased bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-500"
   >
-    <!-- 🧭 Animated Intro Loader -->
+    <!-- ========================================= -->
+    <!-- ⌛ INTRO LOADER -->
+    <!-- ========================================= -->
     <div id="intro-loader">
       <div class="loading-text">LOADING ...</div>
       <div class="typing">HI, WELCOME TO MORSECODE :)</div>
@@ -214,13 +273,13 @@
       <div class="line"></div>
     </div>
 
-    <!-- 🌐 React Mount Point -->
+    <!-- React Mount -->
     <div id="root"></div>
 
-    <!-- ⚡ React App -->
+    <!-- React App -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- ⚙️ Loader Script -->
+    <!-- Loader Script -->
     <script>
       window.addEventListener("load", () => {
         const loader = document.getElementById("intro-loader");
@@ -237,9 +296,9 @@
       });
     </script>
 
-    <!-- 🧠 Dynamic Title Animation -->
+    <!-- Dynamic Title Animation -->
     <script>
-      const titles = ["MorseCode", "-- --- .-. ... ."];
+      const titles = ["Morse Code Converter", "-- --- .-. ... ."];
       let i = 0;
       setInterval(() => {
         document.title = titles[i % titles.length];
@@ -247,7 +306,7 @@
       }, 1800);
     </script>
 
-    <!-- ✅ Analytics -->
+    <!-- Vercel Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>

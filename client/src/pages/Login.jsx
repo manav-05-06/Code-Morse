@@ -54,6 +54,7 @@ export default function Login() {
       <div className="backdrop-blur-0 border border-gray-300 dark:bg-black/30 p-10 rounded-2xl w-full max-w-md hover:shadow-2xl transition-shadow duration-300">
         <h2 className="text-3xl font-bold text-center mb-4">Welcome Back</h2>
         {message && <p className="text-center text-sm mb-3">{message}</p>}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             name="email"
@@ -64,6 +65,7 @@ export default function Login() {
             onChange={handleChange}
             className="w-full px-3 py-2 rounded-md"
           />
+
           <input
             name="password"
             type="password"
@@ -73,6 +75,12 @@ export default function Login() {
             onChange={handleChange}
             className="w-full px-3 py-2 rounded-md"
           />
+
+          {/* ⭐ ADDED FORGOT PASSWORD LINK */}
+          <p className="text-right text-sm text-blue-400 hover:underline mt-[-6px]">
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </p>
+
           <div className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -84,12 +92,14 @@ export default function Login() {
             />
             <label>Remember me</label>
           </div>
+
           <button
             type="submit"
             className="w-full border bg-black text-white py-2 rounded-md"
           >
             Login
           </button>
+
           <button
             type="button"
             onClick={handleGoogleLogin}
@@ -103,6 +113,7 @@ export default function Login() {
             Login with Google
           </button>
         </form>
+
         <p className="text-sm text-center mt-4">
           Don’t have an account?{" "}
           <Link to="/register" className="text-blue-400">
