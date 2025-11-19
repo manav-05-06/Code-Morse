@@ -328,3 +328,26 @@ button:active {
 @keyframes toastFade {
   to { opacity: 0; transform: translate(-50%, -15px); }
 }
+.quiz-btn {
+  @apply border rounded-full p-4 text-xl
+         bg-white/60 dark:bg-black/40
+         border-black/20 dark:border-white/20
+         hover:scale-110 active:scale-95
+         transition-all;
+}
+.btn-light {
+  @apply border border-black dark:border-white 
+         px-8 py-2 rounded-md
+         bg-white/40 dark:bg-black/40 backdrop-blur-md
+         text-black dark:text-white
+         hover:bg-black hover:text-white
+         dark:hover:bg-white dark:hover:text-black
+         transition-all;
+}
+
+.btn-dark {
+  @apply px-8 py-2 rounded-md
+         bg-black text-white 
+         dark:bg-white dark:text-black 
+         hover:opacity-80 transition-all;
+}

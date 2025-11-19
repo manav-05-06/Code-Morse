@@ -40,9 +40,6 @@ export default function SoundQuiz() {
   const wordList = ["HELLO", "WORLD", "MORSE", "QUIZ", "SIGNAL", "RADIO"];
   const sentenceList = ["HELLO WORLD", "MORSE CODE QUIZ", "I LOVE RADIO", "LEARN MORSE FAST"];
 
-  // ======================
-  // Convert to Morse
-  // ======================
   const textToMorse = useCallback(
     (text) =>
       text
@@ -53,9 +50,6 @@ export default function SoundQuiz() {
     [morseMap]
   );
 
-  // ======================
-  // Generate Question
-  // ======================
   const generateNewQuizItem = useCallback(() => {
     let text = "";
 
@@ -83,7 +77,7 @@ export default function SoundQuiz() {
   };
 
   // ======================
-  // Play Morse sound
+  // PLAY SOUND
   // ======================
   const playMorseSound = () => {
     if (!audioCtx.current) {
@@ -129,7 +123,7 @@ export default function SoundQuiz() {
   const replaySound = () => playMorseSound();
 
   // ======================
-  // Visualizer
+  // VISUALIZER
   // ======================
   const startVisualizer = () => {
     const bars = visualizerRef.current?.querySelectorAll(".bar");
@@ -149,7 +143,7 @@ export default function SoundQuiz() {
   };
 
   // ======================
-  // Hint System
+  // HINT
   // ======================
   const handleHint = () => {
     if (hintLevel === 0) {
@@ -164,7 +158,7 @@ export default function SoundQuiz() {
   };
 
   // ======================
-  // Confetti (No Library)
+  // CONFETTI
   // ======================
   const launchConfetti = () => {
     for (let i = 0; i < 25; i++) {
@@ -191,13 +185,12 @@ export default function SoundQuiz() {
   };
 
   // ======================
-  // Submit
+  // SUBMIT
   // ======================
   const handleSubmit = () => {
     totalRounds.current++;
     const isCorrect = input.trim().toUpperCase() === quizTargetText;
 
-    // streak
     if (isCorrect) {
       correctAnswers.current++;
       setStreak((s) => s + 1);
@@ -206,7 +199,6 @@ export default function SoundQuiz() {
       setStreak(0);
     }
 
-    // history
     setHistory((h) => [
       { text: quizTargetText, correct: isCorrect },
       ...h.slice(0, 4),
@@ -217,9 +209,6 @@ export default function SoundQuiz() {
     generateNewRound();
   };
 
-  // ======================
-  // Reset
-  // ======================
   const handleReset = () => {
     setAccuracy(0);
     setStreak(0);
@@ -233,25 +222,33 @@ export default function SoundQuiz() {
   };
 
   // ======================
-  // Render JSX
+  // RENDER UI
   // ======================
   return (
     <div className="flex flex-col items-center py-12 text-center">
 
       {/* Title */}
-      <h2 className="text-3xl md:text-4xl font-semibold text-black dark:text-white">
+      <h2 className="text-3xl md:text-4xl font-semibold text-black dark:text-white mb-6">
         Sound Quiz
       </h2>
 
       {/* Controls */}
-      <div className="flex flex-col md:flex-row gap-8 mt-6 items-center">
+      <div className="
+        flex flex-col md:flex-row gap-8 mt-2 items-center
+        bg-white/60 dark:bg-black/30 backdrop-blur-xl
+        px-6 py-5 rounded-xl border border-black/10 dark:border-white/10
+      ">
 
         <div>
-          <label className="block text-sm font-medium">Difficulty</label>
+          <label className="block text-xs uppercase opacity-70">Difficulty</label>
           <select
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
-            className="border px-3 py-2 rounded-md bg-white dark:bg-black/40 dark:text-white"
+            className="
+              border px-3 py-2 rounded-md mt-1
+              bg-white/80 dark:bg-black/40 dark:text-white
+              border-black/20 dark:border-white/20
+            "
           >
             <option>Letters</option>
             <option>Words</option>
@@ -260,32 +257,55 @@ export default function SoundQuiz() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Speed</label>
-          <input type="range" min="0.5" max="2" step="0.1" value={speed} onChange={(e) => setSpeed(Number(e.target.value))} />
+          <label className="block text-xs uppercase opacity-70">Speed</label>
+          <input type="range" min="0.5" max="2" step="0.1"
+            value={speed}
+            onChange={(e) => setSpeed(Number(e.target.value))}
+            className="mt-2"
+          />
         </div>
 
         <div>
-          <label className="block text-sm font-medium">Volume</label>
-          <input type="range" min="0" max="1" step="0.05" value={volume} onChange={(e) => setVolume(Number(e.target.value))} />
+          <label className="block text-xs uppercase opacity-70">Volume</label>
+          <input type="range" min="0" max="1" step="0.05"
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+            className="mt-2"
+          />
         </div>
       </div>
 
-      {/* Main Buttons */}
+      {/* Buttons */}
       <div className="flex gap-4 mt-10">
-        <button onClick={playMorseSound} className="border rounded-full p-4 text-xl">▶️</button>
-        <button onClick={replaySound} className="border rounded-full p-4 text-xl">🔁</button>
-        <button onClick={generateNewRound} className="border rounded-full p-4 text-xl">⏭</button>
+        <button className="quiz-btn" onClick={playMorseSound}>▶️</button>
+        <button className="quiz-btn" onClick={replaySound}>🔁</button>
+        <button className="quiz-btn" onClick={generateNewRound}>⏭</button>
       </div>
 
+      
       {/* Visualizer */}
-      <div ref={visualizerRef} className="flex justify-center gap-1 mt-6 h-10 w-40">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div key={i} className="bar bg-black dark:bg-white w-1 rounded-md transition-all duration-100" style={{ height: "10px" }} />
+      <div
+        ref={visualizerRef}
+        className="
+          flex justify-center gap-1 mt-6 h-10 w-52
+          bg-white/50 dark:bg-black/40 rounded-lg p-2 backdrop-blur-xl
+        "
+      >
+        {Array.from({ length: 18 }).map((_, i) => (
+          <div key={i} className="bar w-1 rounded-md bg-black dark:bg-white transition-all duration-75" style={{ height: "10px" }} />
         ))}
       </div>
 
       {/* Hint */}
-      <button onClick={handleHint} className="mt-6 px-6 py-2 border rounded-md">
+      <button 
+        onClick={handleHint}
+        className="
+          mt-6 px-6 py-2 border rounded-md
+          bg-white/50 dark:bg-black/40
+          border-black/20 dark:border-white/20
+          hover:scale-105 transition
+        "
+      >
         💡 Hint
       </button>
 
@@ -301,54 +321,75 @@ export default function SoundQuiz() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Decode the Morse sound..."
-          className="flex-1 border px-4 py-3 rounded-l-md"
+          className="
+            flex-1 border px-4 py-3 rounded-l-md bg-white/70 dark:bg-black/40
+            border-black/20 dark:border-white/20 outline-none
+          "
         />
-        <button onClick={handleSubmit} className="bg-black text-white px-4 py-3 rounded-r-md">
+        <button
+          onClick={handleSubmit}
+          className="
+            bg-black text-white dark:bg-white dark:text-black 
+            px-6 py-3 rounded-r-md hover:scale-105 transition
+          "
+        >
           ✓
         </button>
       </div>
 
       {/* Stats */}
-      <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl bg-gray-100 dark:bg-black/30 rounded-lg py-6">
+      <div className="
+        mt-10 grid grid-cols-2 md:grid-cols-4 gap-4
+        w-full max-w-3xl 
+        bg-white/70 dark:bg-black/30 backdrop-blur-xl 
+        rounded-xl border border-black/10 dark:border-white/10
+        py-6
+      ">
 
         <div>
-          <p className="text-xs text-gray-500">Accuracy</p>
-          <p className="text-xl font-bold">{accuracy}%</p>
+          <p className="text-xs opacity-60">Accuracy</p>
+          <p className="text-xl font-semibold">{accuracy}%</p>
         </div>
 
         <div>
-          <p className="text-xs text-gray-500">Round</p>
-          <p className="text-xl font-bold">{round}</p>
+          <p className="text-xs opacity-60">Round</p>
+          <p className="text-xl font-semibold">{round}</p>
         </div>
 
         <div>
-          <p className="text-xs text-gray-500">Streak</p>
-          <p
-            className={`text-xl font-bold transition ${
-              streak >= 3 ? "text-green-600 scale-110" : ""
-            }`}
-          >
+          <p className="text-xs opacity-60">Streak</p>
+          <p className={`text-xl font-semibold transition ${streak >= 3 ? "text-green-600 scale-110" : ""}`}>
             {streak}
           </p>
         </div>
 
-        <div>
-          <button onClick={handleReset} className="bg-black text-white rounded-md px-4 py-2 text-sm">
+        <div className="flex justify-center">
+          <button
+            onClick={handleReset}
+            className="
+              bg-black text-white dark:bg-white dark:text-black 
+              rounded-md px-4 py-2 text-sm hover:scale-105 transition
+            "
+          >
             🔁 Reset
           </button>
         </div>
       </div>
 
       {/* History */}
-      <div className="mt-10 w-full max-w-xl bg-gray-100 dark:bg-black/30 rounded-lg py-6 px-6 text-left">
+      <div className="
+        mt-10 w-full max-w-3xl
+        bg-white/70 dark:bg-black/30 backdrop-blur-xl
+        p-6 rounded-xl border border-black/10 dark:border-white/10
+      ">
         <h3 className="text-lg font-semibold mb-3">Last 5 Attempts</h3>
 
         {history.length === 0 && (
-          <p className="text-sm text-gray-500">No attempts yet.</p>
+          <p className="text-sm opacity-60">No attempts yet.</p>
         )}
 
         {history.map((entry, i) => (
-          <p key={i} className="text-sm mb-1">
+          <p key={i} className="text-sm my-1">
             {entry.text} →
             <span className={entry.correct ? "text-green-600 ml-1" : "text-red-600 ml-1"}>
               {entry.correct ? "Correct" : "Wrong"}
@@ -356,7 +397,6 @@ export default function SoundQuiz() {
           </p>
         ))}
       </div>
-
     </div>
   );
 }

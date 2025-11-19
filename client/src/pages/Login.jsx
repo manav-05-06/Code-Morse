@@ -11,10 +11,11 @@ import { useAuth } from "../context/AuthContext";
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "", remember: true });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 
-  if (user) navigate("/"); // Already logged in
+  if (user) navigate("/");
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,40 +23,70 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
+
       await signInWithEmailAndPassword(auth, form.email, form.password);
+
       setMessage("✅ Welcome back!");
       setTimeout(() => navigate("/"), 800);
     } catch (error) {
       if (error.code === "auth/user-not-found") {
         setMessage("⚠️ No account found. Please register first.");
+      } else if (error.code === "auth/wrong-password") {
+        setMessage("❌ Incorrect password. Try again.");
       } else {
         setMessage("❌ " + error.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
+      setLoading(true);
+
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
+
       setMessage("✅ Logged in successfully!");
       setTimeout(() => navigate("/"), 800);
     } catch (error) {
-      if (error.code === "auth/user-not-found") {
-        setMessage("⚠️ No Google account found. Please sign up first.");
-      } else {
-        setMessage("❌ Google login failed. Try again.");
-      }
+      setMessage("❌ Google login failed. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="backdrop-blur-0 border border-gray-300 dark:bg-black/30 p-10 rounded-2xl w-full max-w-md hover:shadow-2xl transition-shadow duration-300">
+    <div className="flex items-center justify-center min-h-screen px-4">
+      <div
+        className="
+          border border-gray-300 dark:border-white/20
+          bg-white/20 dark:bg-black/30
+          p-10 rounded-2xl w-full max-w-md
+          backdrop-blur-xl
+          hover:shadow-2xl hover:scale-[1.01]
+          transition-all duration-300
+        "
+      >
         <h2 className="text-3xl font-bold text-center mb-4">Welcome Back</h2>
-        {message && <p className="text-center text-sm mb-3">{message}</p>}
+
+        {message && (
+          <p
+            className={`text-center text-sm mb-3 transition-all duration-300 ${
+              message.startsWith("❌") || message.startsWith("⚠️")
+                ? "text-red-500"
+                : "text-green-500"
+            }`}
+          >
+            {message}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+
+          {/* Email */}
           <input
             name="email"
             type="email"
@@ -63,25 +94,49 @@ export default function Login() {
             required
             value={form.email}
             onChange={handleChange}
-            className="w-full px-3 py-2 rounded-md"
+            className="
+              w-full px-3 py-2 rounded-md outline-none
+              bg-white/60 dark:bg-black/40
+              border border-gray-300 dark:border-white/30
+              focus:ring-2 focus:ring-black/40 dark:focus:ring-white/30
+              transition-all
+            "
           />
 
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            required
-            value={form.password}
-            onChange={handleChange}
-            className="w-full px-3 py-2 rounded-md"
-          />
+          {/* Password */}
+          <div className="flex flex-col gap-1">
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+              value={form.password}
+              onChange={handleChange}
+              className="
+                w-full px-3 py-2 rounded-md outline-none
+                bg-white/60 dark:bg-black/40
+                border border-gray-300 dark:border-white/30
+                focus:ring-2 focus:ring-black/40 dark:focus:ring-white/30
+                transition-all
+              "
+            />
 
-          {/* ⭐ ADDED FORGOT PASSWORD LINK */}
-          <p className="text-right text-sm text-blue-400 hover:underline mt-[-6px]">
-            <Link to="/forgot-password">Forgot Password?</Link>
-          </p>
+            {/* 👉 Forgot Password Link */}
+            <Link
+              to="/forgot-password"
+              className="
+                text-xs text-blue-500 dark:text-blue-300 
+                mt-1 ml-1 self-end
+                hover:underline hover:opacity-90 
+                transition
+              "
+            >
+              Forgot password?
+            </Link>
+          </div>
 
-          <div className="flex items-center gap-2 text-sm">
+          {/* Remember me */}
+          <div className="flex items-center gap-2 text-sm mt-1">
             <input
               type="checkbox"
               name="remember"
@@ -93,22 +148,39 @@ export default function Login() {
             <label>Remember me</label>
           </div>
 
+          {/* LOGIN BUTTON */}
           <button
             type="submit"
-            className="w-full border bg-black text-white py-2 rounded-md"
+            disabled={loading}
+            className="
+              w-full bg-black text-white dark:bg-white dark:text-black 
+              py-2 rounded-md font-medium
+              transition-all duration-300
+              hover:scale-105 active:scale-95
+              disabled:opacity-50 disabled:cursor-not-allowed
+            "
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
 
+          {/* GOOGLE LOGIN */}
           <button
             type="button"
             onClick={handleGoogleLogin}
-            className="w-full border py-2 rounded-md flex items-center justify-center gap-2"
+            disabled={loading}
+            className="
+              w-full border py-2 rounded-md flex items-center justify-center gap-2
+              bg-white/50 dark:bg-black/40
+              border-gray-300 dark:border-white/30
+              hover:scale-105 active:scale-95 
+              transition-all duration-300
+              disabled:opacity-50 disabled:cursor-not-allowed
+            "
           >
             <img
-              src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-              alt="Google"
-              className="h-5"
+              src='https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg'
+              className='h-5'
+              alt='Google icon'
             />
             Login with Google
           </button>
@@ -116,7 +188,7 @@ export default function Login() {
 
         <p className="text-sm text-center mt-4">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-blue-400">
+          <Link to="/register" className="text-blue-400 hover:underline">
             Register
           </Link>
         </p>
