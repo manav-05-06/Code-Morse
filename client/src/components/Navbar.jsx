@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import DarkModeToggle from "./DarkModeToggle";
 import { useAuth } from "../context/AuthContext";
+import InstallButton from "./InstallButton";
 
 export default function Navbar() {
   const [activeSection, setActiveSection] = useState("converter");
@@ -220,6 +221,7 @@ export default function Navbar() {
               Logout
             </button>
           )}
+          <InstallButton/>
         </ul>
       </div>
     </header>

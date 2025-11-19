@@ -1,86 +1,64 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
     <!-- 🚀 BASIC SETUP -->
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- 🚀 SEO OPTIMIZED TITLE -->
     <title>
-      Free Morse Code Converter | Text ↔ Morse Translator with Sound | MorseCode App
+      Free Morse Code Converter | Text ↔ Morse Translator with Sound | MorseCode
     </title>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.png" />
-
-    <!-- Canonical -->
     <link rel="canonical" href="https://code-morse-me.vercel.app/" />
+    <meta name="theme-color" content="#000" />
 
-    <!-- ========================================= -->
-    <!-- 🧠 SEO META TAGS -->
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
+    <!-- 🧠 SEO -->
+    <!-- ====================================================== -->
     <meta
       name="description"
-      content="Free Morse Code Converter. Convert text to Morse and Morse to text instantly with sound playback, WAV download, practice mode, and clean UI. Fast, accurate, easy to use."
+      content="Free Morse Code Converter. Convert text to Morse or Morse to text instantly with sound, WAV download, practice mode, and a clean modern UI."
     />
-
     <meta
       name="keywords"
-      content="
-        morse code converter,
-        morse translator,
-        text to morse,
-        morse to text,
-        morse decoder,
-        online morse code generator,
-        morse code sound,
-        morse wav download,
-        morse code practice tool
-      "
+      content="morse code converter, morse translator, text to morse, morse to text, morse decoder, morse sound tool, wav morse generator"
     />
-
     <meta name="author" content="Manav Khandelwal" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#000000" />
 
-    <!-- ========================================= -->
-    <!-- 🌐 OPEN GRAPH (SOCIAL SHARING) -->
-    <!-- ========================================= -->
+    <!-- OPEN GRAPH -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://code-morse-me.vercel.app/" />
     <meta property="og:site_name" content="MorseCode" />
-
     <meta
       property="og:title"
       content="Free Morse Code Converter | Text ↔ Morse Translator"
     />
     <meta
       property="og:description"
-      content="Convert text to Morse & Morse to text with sound and WAV download. Free, fast, modern Morse tool."
+      content="Convert text ↔ Morse with sound, WAV export, and practice tools. Free & modern!"
     />
     <meta property="og:image" content="/preview.png" />
 
-    <!-- ========================================= -->
-    <!-- 🐦 TWITTER CARD -->
-    <!-- ========================================= -->
+    <!-- TWITTER CARD -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:creator" content="@manavkhandelwal" />
-
     <meta
       name="twitter:title"
       content="Morse Code Converter | Text ↔ Morse with Sound"
     />
     <meta
       name="twitter:description"
-      content="Free Morse converter with sound, clean UI, and instant translation."
+      content="Free, fast Morse translator with sound & WAV download."
     />
     <meta name="twitter:image" content="/preview.png" />
 
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
     <!-- 🔤 FONTS -->
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
     <link
       rel="preload"
       as="style"
@@ -91,16 +69,16 @@
       rel="stylesheet"
     />
 
-    <!-- ========================================= -->
-    <!-- 📘 JSON-LD — APP STRUCTURED DATA -->
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
+    <!-- 📘 JSON-LD APP INFO -->
+    <!-- ====================================================== -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        "name": "MorseCode Converter",
+        "name": "Morse Code Converter",
         "url": "https://code-morse-me.vercel.app/",
-        "description": "Free interactive Morse Code converter for text ↔ Morse with sound playback.",
+        "description": "Free interactive Morse Code converter for text ↔ Morse with sound playback and WAV download.",
         "creator": {
           "@type": "Person",
           "name": "Manav Khandelwal"
@@ -110,9 +88,7 @@
       }
     </script>
 
-    <!-- ========================================= -->
-    <!-- 📘 JSON-LD — FAQ (Google Ranking Boost) -->
-    <!-- ========================================= -->
+    <!-- JSON-LD FAQ -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -123,146 +99,212 @@
             "name": "How do I convert text to Morse code?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Type any text in the converter and it instantly generates Morse code with optional sound playback and WAV export."
+              "text": "Type text in the converter and it instantly generates Morse code with sound playback."
             }
           },
           {
             "@type": "Question",
-            "name": "Can I convert Morse code back to text?",
+            "name": "Can I convert Morse to text?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. Paste dots and dashes into the decoder and it outputs plain English instantly."
+              "text": "Yes, paste Morse dots/dashes and the decoder converts them into readable English."
             }
           }
         ]
       }
     </script>
 
-    <!-- ========================================= -->
-    <!-- 🟦 PWA MANIFEST -->
-    <!-- ========================================= -->
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="apple-touch-icon" href="/icon-512.png" />
-
-    <!-- ========================================= -->
-    <!-- 🎬 INTRO LOADER STYLES -->
-    <!-- ========================================= -->
+    <!-- ====================================================== -->
+    <!-- 🎬 LOADER + INSTALL POPUP CSS -->
+    <!-- ====================================================== -->
     <style>
       body {
         font-family: "JetBrains Mono", monospace;
-        background-color: #f5f5f5;
+        background: #f5f5f5;
         color: #111;
         overflow: hidden;
         transition: background 0.6s ease, color 0.6s ease;
       }
       .dark body {
-        background-color: #0a0a0a;
+        background: #0a0a0a;
         color: #fff;
       }
 
+      /* ---------------------------------- */
+      /* Intro Loader */
+      /* ---------------------------------- */
       #intro-loader {
         position: fixed;
         inset: 0;
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        text-align: center;
-        background: inherit;
+        align-items: center;
+        flex-direction: column;
         backdrop-filter: blur(0px);
         z-index: 9999;
         transition: opacity 1s ease, backdrop-filter 1.2s ease;
       }
       #intro-loader.fade-out {
         opacity: 0;
-        backdrop-filter: blur(20px);
+        backdrop-filter: blur(18px);
         pointer-events: none;
       }
 
       .loading-text {
         font-size: 1rem;
-        animation: fadeIn 0.8s ease-in forwards;
+        animation: fadeIn 0.8s ease-out forwards;
       }
       .typing {
-        font-size: 1.2rem;
-        margin-top: 2rem;
+        margin-top: 18px;
         border-right: 2px solid currentColor;
         white-space: nowrap;
         overflow: hidden;
         width: 0;
-        animation: typing 1.4s 0.4s steps(30, end) forwards,
-          blink 0.8s step-end infinite;
+        animation: typing 1.4s steps(30, end) forwards, blink 0.8s infinite;
       }
       .subtext {
+        margin-top: 12px;
         opacity: 0;
-        margin-top: 1rem;
-        font-size: 0.9rem;
-        animation: fadeIn 1.6s 2.3s ease-in forwards;
+        animation: fadeIn 1.5s 1.8s forwards;
         color: rgba(0, 0, 0, 0.55);
       }
       .dark .subtext {
-        color: rgba(255, 255, 255, 0.6);
-      }
-      .line {
-        width: 70%;
-        height: 1px;
-        background: linear-gradient(
-          to right,
-          transparent,
-          currentColor,
-          transparent
-        );
-        margin-top: 2rem;
-        opacity: 0.4;
-        animation: slideLine 3s 1.2s ease-in-out infinite;
+        color: rgba(255, 255, 255, 0.65);
       }
 
       @keyframes typing {
-        from { width: 0; }
-        to { width: 23ch; }
+        from {
+          width: 0;
+        }
+        to {
+          width: 22ch;
+        }
       }
       @keyframes blink {
-        50% { border-color: transparent; }
+        50% {
+          border-color: transparent;
+        }
       }
       @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      @keyframes slideLine {
-        0% { transform: scaleX(0); }
-        50% { transform: scaleX(1); }
-        100% { transform: scaleX(0); }
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
 
-      #root { opacity: 0; transition: opacity 1.2s ease 0.3s; }
-      #root.show { opacity: 1; }
+      #root {
+        opacity: 0;
+        transition: opacity 1.2s ease;
+      }
+      #root.show {
+        opacity: 1;
+      }
+
+      /* ---------------------------------- */
+      /* INSTALL POPUP */
+      /* ---------------------------------- */
+      #installPopup {
+        position: fixed;
+        bottom: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 270px;
+        background: rgba(255, 255, 255, 0.88);
+        border-radius: 14px;
+        padding: 18px;
+        text-align: center;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.18);
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        z-index: 99999;
+        opacity: 0;
+      }
+      #installPopup.show {
+        opacity: 1;
+        bottom: 25px;
+      }
+      .dark #installPopup {
+        background: rgba(0, 0, 0, 0.7);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
     </style>
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
   </head>
 
-  <body
-    class="antialiased bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-500"
-  >
-    <!-- ========================================= -->
-    <!-- ⌛ INTRO LOADER -->
-    <!-- ========================================= -->
+  <body class="antialiased bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100">
+    <!-- ====================================================== -->
+    <!-- ⏳ INTRO LOADER -->
+    <!-- ====================================================== -->
     <div id="intro-loader">
       <div class="loading-text">LOADING ...</div>
       <div class="typing">HI, WELCOME TO MORSECODE :)</div>
       <div class="subtext">A SIMPLE PLACE TO LEARN MORSE CODE WITH SOUND 🎵</div>
-      <div class="line"></div>
     </div>
 
-    <!-- React Mount -->
+    <!-- ====================================================== -->
+    <!-- ⚛ ROOT APP -->
+    <!-- ====================================================== -->
     <div id="root"></div>
 
-    <!-- React App -->
+    <!-- ====================================================== -->
+    <!-- 📦 INSTALL POPUP -->
+    <!-- ====================================================== -->
+    <div id="installPopup">
+      <h3 style="margin-bottom: 6px; font-weight: 600;">Install MorseCode App?</h3>
+      <p style="font-size: 13px; opacity: 0.7;">
+        Offline support • Faster access
+      </p>
+
+      <div style="display: flex; gap: 10px; margin-top: 12px;">
+        <button
+          id="installBtn"
+          style="
+            flex: 1;
+            padding: 8px;
+            background: black;
+            color: white;
+            border-radius: 8px;
+          "
+          class="dark:bg-white dark:text-black"
+        >
+          Install
+        </button>
+
+        <button
+          id="dismissInstall"
+          style="
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #666;
+            background: transparent;
+            border-radius: 8px;
+            color: inherit;
+          "
+          class="dark:border-white/40"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- ====================================================== -->
+    <!-- ⚛ MAIN APP SCRIPT -->
+    <!-- ====================================================== -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- Intro Loader script -->
+    <!-- ====================================================== -->
+    <!-- 🎬 INTRO LOADER SCRIPT -->
+    <!-- ====================================================== -->
     <script>
-      window.addEventListener("load", () => {
+      window.onload = () => {
         const loader = document.getElementById("intro-loader");
         const root = document.getElementById("root");
 
@@ -270,14 +312,57 @@
           loader.classList.add("fade-out");
           setTimeout(() => {
             loader.remove();
-            document.body.style.overflow = "auto";
             root.classList.add("show");
-          }, 1000);
-        }, 3600);
+            document.body.style.overflow = "auto";
+          }, 900);
+        }, 3500);
+      };
+    </script>
+
+    <!-- ====================================================== -->
+    <!-- 📱 PWA INSTALL HANDLER -->
+    <!-- ====================================================== -->
+    <script>
+      let deferredPrompt;
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        if (localStorage.getItem("installedPWA") === "true") return;
+        if (localStorage.getItem("dismissInstall") === "true") return;
+
+        e.preventDefault();
+        deferredPrompt = e;
+
+        const popup = document.getElementById("installPopup");
+        popup.classList.add("show");
+      });
+
+      document.getElementById("installBtn").onclick = async () => {
+        if (!deferredPrompt) return;
+
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+
+        if (choice.outcome === "accepted") {
+          localStorage.setItem("installedPWA", "true");
+        }
+
+        document.getElementById("installPopup").classList.remove("show");
+      };
+
+      document.getElementById("dismissInstall").onclick = () => {
+        localStorage.setItem("dismissInstall", "true");
+        document.getElementById("installPopup").classList.remove("show");
+      };
+
+      window.addEventListener("appinstalled", () => {
+        localStorage.setItem("installedPWA", "true");
+        document.getElementById("installPopup").classList.remove("show");
       });
     </script>
 
-    <!-- Dynamic Title Animation -->
+    <!-- ====================================================== -->
+    <!-- 🧠 Dynamic Title -->
+    <!-- ====================================================== -->
     <script>
       const titles = ["Morse Code Converter", "-- --- .-. ... ."];
       let i = 0;
@@ -287,87 +372,9 @@
       }, 1800);
     </script>
 
-    <!-- ======================== -->
-    <!-- 🟧 INSTALL POPUP (PWA)   -->
-    <!-- ======================== -->
-    <div
-      id="installPopup"
-      style="
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(255,255,255,0.85);
-        padding: 16px 22px;
-        border-radius: 14px;
-        border: 1px solid #ccc;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        display: none;
-        backdrop-filter: blur(12px);
-        z-index: 999999;
-      "
-      class="dark:bg-black/70 dark:border-white/20 dark:text-white"
-    >
-      <p style="margin-bottom: 10px; font-weight: 600;">
-        Install MorseCode App?
-      </p>
-      <button
-        id="installBtn"
-        style="
-          padding: 8px 16px;
-          background: black;
-          color: white;
-          border-radius: 8px;
-          border: none;
-          cursor: pointer;
-        "
-        class="dark:bg-white dark:text-black"
-      >
-        Install
-      </button>
-    </div>
-
-    <!-- PWA Install Logic -->
-    <script>
-      let deferredPrompt;
-
-      window.addEventListener("beforeinstallprompt", (e) => {
-        if (localStorage.getItem("installedPWA") === "true") return;
-
-        e.preventDefault();
-        deferredPrompt = e;
-
-        document.getElementById("installPopup").style.display = "block";
-      });
-
-      document.getElementById("installBtn").addEventListener("click", async () => {
-        if (!deferredPrompt) return;
-
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-
-        if (choice.outcome === "accepted") {
-          localStorage.setItem("installedPWA", "true");
-          document.getElementById("installPopup").style.display = "none";
-        }
-      });
-
-      window.addEventListener("appinstalled", () => {
-        localStorage.setItem("installedPWA", "true");
-        document.getElementById("installPopup").style.display = "none";
-      });
-    </script>
-
-    <!-- ======================== -->
-    <!-- REGISTER SERVICE WORKER -->
-    <!-- ======================== -->
-    <script>
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service-worker.js");
-      }
-    </script>
-
-    <!-- Vercel Analytics -->
+    <!-- ====================================================== -->
+    <!-- 📊 Vercel Analytics -->
+    <!-- ====================================================== -->
     <script defer src="/_vercel/insights/script.js"></script>
   </body>
 </html>
